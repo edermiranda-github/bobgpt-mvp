@@ -489,7 +489,9 @@
             setTimeout(() => {
                 addMessage('bot', texts[lang].welcome);
                 chatState.currentStep = 'coverRating';
-                setTimeout(() => askRating('coverRating'), 1000);
+                setTimeout(() => {
+                    askRating('coverRating');
+                }, 1000);
             }, 500);
         }
 
