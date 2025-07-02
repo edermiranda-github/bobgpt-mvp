@@ -370,15 +370,15 @@
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
 
-        function selectLanguage(lang, element) {
-            console.log('selectLanguage called with:', lang, element);
+        function selectLanguage(lang) {
+            console.log('selectLanguage called with:', lang);
             chatState.language = lang;
             chatState.responses.language = lang;
             
-            // Marcar botão selecionado
-            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('selected'));
-            element.classList.add('selected');
-            
+            // Remover botões de idioma
+            const chatInput = document.getElementById('chatInput');
+            chatInput.innerHTML = '';
+
             // Adicionar resposta do usuário
             addMessage('user', lang === 'pt' ? 'Português' : 'English');
             
@@ -422,7 +422,7 @@
             chatInput.innerHTML = `
                 <div class="rating-buttons">
                     ${[0,1,2,3,4,5].map(num => 
-                        `<button class="rating-btn" onclick="selectRating('${step}', ${num}, this)">${num}</button>`
+                        `<button class="rating-btn" onclick="selectRating('${step}', ${num})">${num}</button>`
                     ).join('')}
                 </div>
                 <p style="text-align: center; color: #666; font-size: 0.9em; margin-top: 10px;">
@@ -432,13 +432,9 @@
             scrollToBottom(); // Adicionado para rolar automaticamente
         }
 
-        function selectRating(step, rating, element) {
-            console.log('selectRating called with:', step, rating, element);
+        function selectRating(step, rating) {
+            console.log('selectRating called with:', step, rating);
             chatState.responses[step] = rating;
-            
-            // Marcar botão selecionado
-            document.querySelectorAll('.rating-btn').forEach(btn => btn.classList.remove('selected'));
-            element.classList.add('selected');
             
             // Adicionar resposta do usuário
             addMessage('user', `${rating}/5`);
@@ -590,19 +586,8 @@
                     };
                     chatState.currentStep = 'language';
                     setTimeout(() => {
-                        document.getElementById('chatMessages').innerHTML = `
-                            <div class="message bot">
-                                Saudações! / Greetings! 👋
-                                <div style="margin-top: 10px;">
-                                    Por favor, selecione seu idioma / Please select your language:
-                                </div>
-                                <div class="language-selector">
-                                    <button class="lang-btn" onclick="selectLanguage('pt', this)">🇧🇷 Português</button>
-                                    <button class="lang-btn" onclick="selectLanguage('en', this)">🇺🇸 English</button>
-                                </div>
-                            </div>
-                        `;
-                        document.getElementById('chatInput').innerHTML = '';
+                        document.getElementById('chatMessages').innerHTML = ''; // Limpar mensagens
+                        initializeChat(); // Reiniciar o chat
                     }, 2000);
                 } else {
                     addMessage('bot', texts[lang].error);
@@ -614,26 +599,33 @@
             }
         }
 
-        // Inicialização
-        window.onload = () => {
-            console.log('Window loaded');
-            // Adicionar a mensagem inicial ao carregar a página
+        // Função de inicialização do chat
+        function initializeChat() {
+            console.log('initializeChat called');
             const chatMessages = document.getElementById('chatMessages');
+            const chatInput = document.getElementById('chatInput');
+
             chatMessages.innerHTML = `
                 <div class="message bot">
                     Saudações! / Greetings! 👋
                     <div style="margin-top: 10px;">
                         Por favor, selecione seu idioma / Please select your language:
                     </div>
-                    <div class="language-selector">
-                        <button class="lang-btn" onclick="selectLanguage('pt', this)">🇧🇷 Português</button>
-                        <button class="lang-btn" onclick="selectLanguage('en', this)">🇺🇸 English</button>
-                    </div>
+                </div>
+            `;
+            chatInput.innerHTML = `
+                <div class="language-selector">
+                    <button class="lang-btn" onclick="selectLanguage('pt')">🇧🇷 Português</button>
+                    <button class="lang-btn" onclick="selectLanguage('en')">🇺🇸 English</button>
                 </div>
             `;
             scrollToBottom();
-        };
+        }
+
+        // Inicialização ao carregar a janela
+        window.onload = initializeChat;
     </script>
 </body>
 </html>
+
 
