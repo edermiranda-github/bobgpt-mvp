@@ -358,16 +358,20 @@
 
         function addMessage(sender, text) {
             const chatMessages = document.getElementById('chatMessages');
-            const messageDiv = document.createElement('div');
-            messageDiv.classList.add('message', sender);
-            messageDiv.innerHTML = text;
-            chatMessages.appendChild(messageDiv);
-            scrollToBottom(); // Adicionado para rolar automaticamente
+            if (chatMessages) {
+                const messageDiv = document.createElement('div');
+                messageDiv.classList.add('message', sender);
+                messageDiv.innerHTML = text;
+                chatMessages.appendChild(messageDiv);
+                scrollToBottom(); // Adicionado para rolar automaticamente
+            }
         }
 
         function scrollToBottom() {
             const chatMessages = document.getElementById('chatMessages');
-            chatMessages.scrollTop = chatMessages.scrollHeight;
+            if (chatMessages) {
+                chatMessages.scrollTop = chatMessages.scrollHeight;
+            }
         }
 
         function selectLanguage(lang) {
@@ -377,7 +381,9 @@
             
             // Remover botões de idioma
             const chatInput = document.getElementById('chatInput');
-            chatInput.innerHTML = '';
+            if (chatInput) {
+                chatInput.innerHTML = '';
+            }
 
             // Adicionar resposta do usuário
             addMessage('user', lang === 'pt' ? 'Português' : 'English');
@@ -419,17 +425,19 @@
         function showRatingButtons(step) {
             console.log('showRatingButtons called with:', step);
             const chatInput = document.getElementById('chatInput');
-            chatInput.innerHTML = `
-                <div class="rating-buttons">
-                    ${[0,1,2,3,4,5].map(num => 
-                        `<button class="rating-btn" onclick="selectRating('${step}', ${num})">${num}</button>`
-                    ).join('')}
-                </div>
-                <p style="text-align: center; color: #666; font-size: 0.9em; margin-top: 10px;">
-                    ${texts[chatState.language].selectRating}
-                </p>
-            `;
-            scrollToBottom(); // Adicionado para rolar automaticamente
+            if (chatInput) {
+                chatInput.innerHTML = `
+                    <div class="rating-buttons">
+                        ${[0,1,2,3,4,5].map(num => 
+                            `<button class="rating-btn" onclick="selectRating('${step}', ${num})">${num}</button>`
+                        ).join('')}
+                    </div>
+                    <p style="text-align: center; color: #666; font-size: 0.9em; margin-top: 10px;">
+                        ${texts[chatState.language].selectRating}
+                    </p>
+                `;
+                scrollToBottom(); // Adicionado para rolar automaticamente
+            }
         }
 
         function selectRating(step, rating) {
@@ -473,21 +481,23 @@
             console.log('showFeedbackInput called');
             const lang = chatState.language;
             const chatInput = document.getElementById('chatInput');
-            chatInput.innerHTML = `
-                <div class="input-group">
-                    <textarea id="feedbackText" placeholder="${texts[lang].textPlaceholder}"></textarea>
-                </div>
-                <div class="button-group">
-                    <button class="btn btn-primary" onclick="sendTextFeedback()">
-                        ${texts[lang].sendText}
-                    </button>
-                    <button class="btn btn-secondary" id="audioBtn" onclick="toggleAudioRecording()">
-                        ${texts[lang].recordAudio}
-                    </button>
-                </div>
-                <div id="audioStatus" class="hidden"></div>
-            `;
-            scrollToBottom(); // Adicionado para rolar automaticamente
+            if (chatInput) {
+                chatInput.innerHTML = `
+                    <div class="input-group">
+                        <textarea id="feedbackText" placeholder="${texts[lang].textPlaceholder}"></textarea>
+                    </div>
+                    <div class="button-group">
+                        <button class="btn btn-primary" onclick="sendTextFeedback()">
+                            ${texts[lang].sendText}
+                        </button>
+                        <button class="btn btn-secondary" id="audioBtn" onclick="toggleAudioRecording()">
+                            ${texts[lang].recordAudio}
+                        </button>
+                    </div>
+                    <div id="audioStatus" class="hidden"></div>
+                `;
+                scrollToBottom(); // Adicionado para rolar automaticamente
+            }
         }
 
         async function sendTextFeedback() {
@@ -552,7 +562,9 @@
             console.log('sendFeedbackToN8n called');
             const lang = chatState.language;
             const chatInput = document.getElementById('chatInput');
-            chatInput.innerHTML = `<div class="message bot">${texts[lang].sending}</div>`;
+            if (chatInput) {
+                chatInput.innerHTML = `<div class="message bot">${texts[lang].sending}</div>`;
+            }
 
             const formData = new FormData();
             for (const key in chatState.responses) {
@@ -586,7 +598,10 @@
                     };
                     chatState.currentStep = 'language';
                     setTimeout(() => {
-                        document.getElementById('chatMessages').innerHTML = ''; // Limpar mensagens
+                        const chatMessages = document.getElementById('chatMessages');
+                        if (chatMessages) {
+                            chatMessages.innerHTML = ''; // Limpar mensagens
+                        }
                         initializeChat(); // Reiniciar o chat
                     }, 2000);
                 } else {
@@ -605,27 +620,30 @@
             const chatMessages = document.getElementById('chatMessages');
             const chatInput = document.getElementById('chatInput');
 
-            chatMessages.innerHTML = `
-                <div class="message bot">
-                    Saudações! / Greetings! 👋
-                    <div style="margin-top: 10px;">
-                        Por favor, selecione seu idioma / Please select your language:
+            if (chatMessages && chatInput) {
+                chatMessages.innerHTML = `
+                    <div class="message bot">
+                        Saudações! / Greetings! 👋
+                        <div style="margin-top: 10px;">
+                            Por favor, selecione seu idioma / Please select your language:
+                        </div>
                     </div>
-                </div>
-            `;
-            chatInput.innerHTML = `
-                <div class="language-selector">
-                    <button class="lang-btn" onclick="selectLanguage('pt')">🇧🇷 Português</button>
-                    <button class="lang-btn" onclick="selectLanguage('en')">🇺🇸 English</button>
-                </div>
-            `;
-            scrollToBottom();
+                `;
+                chatInput.innerHTML = `
+                    <div class="language-selector">
+                        <button class="lang-btn" onclick="selectLanguage('pt')">🇧🇷 Português</button>
+                        <button class="lang-btn" onclick="selectLanguage('en')">🇺🇸 English</button>
+                    </div>
+                `;
+                scrollToBottom();
+            } else {
+                console.error('Elementos chatMessages ou chatInput não encontrados.');
+            }
         }
 
         // Inicialização ao carregar a janela
-        window.onload = initializeChat;
+        document.addEventListener('DOMContentLoaded', initializeChat);
     </script>
 </body>
 </html>
-
 
