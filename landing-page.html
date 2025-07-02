@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Casei com a Garota da Capa - Compartilhe seu Feedback</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #e3f2fd 0%, #f8f9fa 100%);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #64b5f6 0%, #42a5f5 100%);
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/><circle cx="50" cy="10" r="0.5" fill="white" opacity="0.1"/><circle cx="10" cy="60" r="0.5" fill="white" opacity="0.1"/><circle cx="90" cy="40" r="0.5" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            pointer-events: none;
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 20px;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .header p {
+            font-size: 1.3em;
+            margin-bottom: 30px;
+            opacity: 0.95;
+            max-width: 600px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        /* Main Content */
+        .main-content {
+            padding: 80px 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            align-items: center;
+        }
+
+        .book-info {
+            padding: 40px;
+        }
+
+        .book-cover {
+            width: 300px;
+            height: 400px;
+            background: linear-gradient(135deg, #81c784 0%, #66bb6a 100%);
+            border-radius: 15px;
+            margin: 0 auto 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .book-cover::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.1) 50%, transparent 70%);
+        }
+
+        .book-cover-text {
+            text-align: center;
+            color: white;
+            z-index: 1;
+            position: relative;
+        }
+
+        .book-cover h2 {
+            font-size: 1.8em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .book-cover p {
+            font-size: 1em;
+            opacity: 0.9;
+        }
+
+        .synopsis {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-top: 30px;
+        }
+
+        .synopsis h3 {
+            color: #42a5f5;
+            margin-bottom: 20px;
+            font-size: 1.5em;
+        }
+
+        .synopsis p {
+            font-size: 1.1em;
+            line-height: 1.8;
+            color: #555;
+            font-style: italic;
+        }
+
+        /* Chat Section */
+        .chat-section {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+            height: 700px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, #64b5f6 0%, #42a5f5 100%);
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+
+        .chat-header h3 {
+            font-size: 1.4em;
+            margin-bottom: 8px;
+        }
+
+        .chat-header p {
+            opacity: 0.9;
+            font-size: 0.95em;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 25px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            background: #fafafa;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 12px 18px;
+            border-radius: 18px;
+            animation: fadeIn 0.3s ease-in;
+            word-wrap: break-word;
+        }
+
+        .bot-message {
+            background: white;
+            color: #333;
+            align-self: flex-start;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+
+        .user-message {
+            background: #64b5f6;
+            color: white;
+            align-self: flex-end;
+        }
+
+        .input-area {
+            padding: 25px;
+            border-top: 1px solid #e0e0e0;
+            background: white;
+        }
+
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .btn {
+            padding: 14px 24px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255,255,255,0.2);
+            border-radius: 50%;
+            transition: all 0.3s ease;
+            transform: translate(-50%, -50%);
+        }
+
+        .btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #64b5f6 0%, #42a5f5 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(100, 181, 246, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(100, 181, 246, 0.4);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #64b5f6;
+            border: 2px solid #64b5f6;
+        }
+
+        .btn-secondary:hover {
+            background: #64b5f6;
+            color: white;
+            transform: translateY(-2px);
+        }
+
+        .rating-buttons {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 10px;
+        }
+
+        .rating-btn {
+            aspect-ratio: 1;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .rating-btn:hover {
+            border-color: #64b5f6;
+            background: #e3f2fd;
+            transform: scale(1.1);
+        }
+
+        .rating-btn.selected {
+            background: #64b5f6;
+            color: white;
+            border-color: #64b5f6;
+            transform: scale(1.1);
+        }
+
+        .text-input {
+            width: 100%;
+            padding: 14px 20px;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.3s ease;
+        }
+
+        .text-input:focus {
+            border-color: #64b5f6;
+            box-shadow: 0 0 0 3px rgba(100, 181, 246, 0.1);
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .file-label {
+            display: inline-block;
+            padding: 14px 24px;
+            background: linear-gradient(135deg, #4caf50 0%, #45a049 100%);
+            color: white;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-weight: 600;
+            box-shadow: 0 4px 15px rgba(76, 175, 80, 0.3);
+        }
+
+        .file-label:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .loading {
+            display: flex;
+            gap: 6px;
+            padding: 12px 18px;
+            align-items: center;
+        }
+
+        .loading-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #64b5f6;
+            animation: loading 1.4s infinite ease-in-out;
+        }
+
+        .loading-dot:nth-child(1) { animation-delay: -0.32s; }
+        .loading-dot:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes loading {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+
+        /* Footer */
+        .footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 40px 0;
+            margin-top: 80px;
+        }
+
+        .footer p {
+            opacity: 0.8;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: 40px;
+                padding: 40px 0;
+            }
+
+            .header h1 {
+                font-size: 2.2em;
+            }
+
+            .header p {
+                font-size: 1.1em;
+            }
+
+            .book-cover {
+                width: 250px;
+                height: 330px;
+            }
+
+            .chat-section {
+                height: 600px;
+            }
+
+            .rating-buttons {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <h1>Casei com a Garota da Capa</h1>
+                <p>Convido você a se acomodar em uma cadeira confortável e embarcar comigo nesta viagem extraordinária. Aqui compartilho não apenas uma história, mas um tesouro sagrado - os fios dourados que o Universo teceu em minha jornada.</p>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content container">
+        <div class="book-info">
+            <div class="book-cover">
+                <div class="book-cover-text">
+                    <h2>Casei com a<br>Garota da Capa</h2>
+                    <p>Uma jornada extraordinária</p>
+                </div>
+            </div>
+            
+            <div class="synopsis">
+                <h3>Sobre o Livro</h3>
+                <p>Convido você a se acomodar em uma cadeira confortável e embarcar comigo nesta viagem extraordinária. Aqui compartilho não apenas uma história, mas um tesouro sagrado - os fios dourados que o Universo teceu em minha jornada.</p>
+            </div>
+        </div>
+
+        <div class="chat-section">
+            <div class="chat-header">
+                <h3 id="chat-title">Compartilhe seu Feedback</h3>
+                <p id="chat-subtitle">Suas impressões são muito importantes para nós</p>
+            </div>
+            
+            <div class="chat-messages" id="messages">
+                <!-- Mensagens aparecerão aqui -->
+            </div>
+            
+            <div class="input-area" id="input-area">
+                <!-- Área de input dinâmica -->
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Casei com a Garota da Capa. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script>
+        class FeedbackBot {
+            constructor() {
+                this.messages = document.getElementById('messages');
+                this.inputArea = document.getElementById('input-area');
+                this.currentStep = 0;
+                this.language = null;
+                this.responses = {};
+                this.webhookUrl = 'https://bobgpt.app.n8n.cloud/webhook/feedback-webhook';
+                
+                this.steps = {
+                    pt: [
+                        {
+                            message: "Saudações! Feliz em compartilhar com você as primeiras impressões sobre o nosso livro 'Casei com a Garota da Capa'.",
+                            type: "language_select"
+                        },
+                        {
+                            message: "De 0 a 5, a capa é bonita?",
+                            type: "rating",
+                            key: "nota_capa"
+                        },
+                        {
+                            message: "De 0 a 5, o título me chama a atenção?",
+                            type: "rating",
+                            key: "nota_titulo"
+                        },
+                        {
+                            message: "De 0 a 5, é uma história inspiradora?",
+                            type: "rating",
+                            key: "nota_historia"
+                        },
+                        {
+                            message: "De 0 a 5, recomendaria a compra para um amigo?",
+                            type: "rating",
+                            key: "nota_recomendacao"
+                        },
+                        {
+                            message: "Compartilhe suas impressões e feedbacks:",
+                            type: "feedback_choice"
+                        },
+                        {
+                            message: "Muito obrigado pela sua contribuição! Suas respostas foram enviadas com sucesso.",
+                            type: "end"
+                        }
+                    ],
+                    en: [
+                        {
+                            message: "Greetings! I'm happy to share with you the first impressions of our book 'I Married the Cover Girl'.",
+                            type: "language_select"
+                        },
+                        {
+                            message: "From 0 to 5, is the cover beautiful?",
+                            type: "rating",
+                            key: "nota_capa"
+                        },
+                        {
+                            message: "From 0 to 5, does the title grab my attention?",
+                            type: "rating",
+                            key: "nota_titulo"
+                        },
+                        {
+                            message: "From 0 to 5, is it an inspiring story?",
+                            type: "rating",
+                            key: "nota_historia"
+                        },
+                        {
+                            message: "From 0 to 5, would you recommend it to a friend?",
+                            type: "rating",
+                            key: "nota_recomendacao"
+                        },
+                        {
+                            message: "Share your impressions and feedback:",
+                            type: "feedback_choice"
+                        },
+                        {
+                            message: "Thank you very much for your contribution! Your responses have been sent successfully.",
+                            type: "end"
+                        }
+                    ]
+                };
+                
+                this.init();
+            }
+            
+            init() {
+                this.showLanguageSelection();
+            }
+            
+            addMessage(text, isBot = true) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${isBot ? 'bot-message' : 'user-message'}`;
+                messageDiv.textContent = text;
+                this.messages.appendChild(messageDiv);
+                this.messages.scrollTop = this.messages.scrollHeight;
+            }
+            
+            showLoading() {
+                const loadingDiv = document.createElement('div');
+                loadingDiv.className = 'message bot-message loading';
+                loadingDiv.innerHTML = '<div class="loading-dot"></div><div class="loading-dot"></div><div class="loading-dot"></div>';
+                this.messages.appendChild(loadingDiv);
+                this.messages.scrollTop = this.messages.scrollHeight;
+                
+                setTimeout(() => {
+                    loadingDiv.remove();
+                    this.nextStep();
+                }, 1000);
+            }
+            
+            showLanguageSelection() {
+                this.addMessage("Saudações! / Greetings! 👋");
+                this.addMessage("Por favor, selecione seu idioma / Please select your language:");
+                
+                this.inputArea.innerHTML = `
+                    <div class="button-group">
+                        <button class="btn btn-primary" onclick="bot.selectLanguage('pt')">🇧🇷 Português</button>
+                        <button class="btn btn-secondary" onclick="bot.selectLanguage('en')">🇺🇸 English</button>
+                    </div>
+                `;
+            }
+            
+            selectLanguage(lang) {
+                this.language = lang;
+                this.responses.idioma = lang;
+                this.responses.timestamp = new Date().toISOString();
+                
+                const langText = lang === 'pt' ? 'Português' : 'English';
+                this.addMessage(langText, false);
+                
+                // Atualizar títulos
+                if (lang === 'en') {
+                    document.getElementById('chat-title').textContent = 'Share your Feedback';
+                    document.getElementById('chat-subtitle').textContent = 'Your impressions are very important to us';
+                }
+                
+                this.currentStep = 0;
+                this.showLoading();
+            }
+            
+            nextStep() {
+                const steps = this.steps[this.language];
+                if (this.currentStep >= steps.length) return;
+                
+                const step = steps[this.currentStep];
+                this.addMessage(step.message);
+                
+                switch (step.type) {
+                    case 'rating':
+                        this.showRatingInput(step.key);
+                        break;
+                    case 'feedback_choice':
+                        this.showFeedbackChoice();
+                        break;
+                    case 'text_input':
+                        this.showTextInput(step.key);
+                        break;
+                    case 'audio_input':
+                        this.showAudioInput();
+                        break;
+                    case 'end':
+                        this.showEndMessage();
+                        break;
+                }
+            }
+            
+            showRatingInput(key) {
+                this.inputArea.innerHTML = `
+                    <div class="rating-buttons">
+                        ${[0,1,2,3,4,5].map(num => 
+                            `<button class="rating-btn" onclick="bot.selectRating(${num}, '${key}')">${num}</button>`
+                        ).join('')}
+                    </div>
+                `;
+            }
+            
+            selectRating(rating, key) {
+                // Atualizar visual do botão selecionado
+                document.querySelectorAll('.rating-btn').forEach(btn => btn.classList.remove('selected'));
+                event.target.classList.add('selected');
+                
+                setTimeout(() => {
+                    this.responses[key] = rating;
+                    this.addMessage(rating.toString(), false);
+                    this.currentStep++;
+                    this.showLoading();
+                }, 500);
+            }
+            
+            showFeedbackChoice() {
+                const textBtn = this.language === 'pt' ? 'Deixar um texto ✍️' : 'Leave a text ✍️';
+                const audioBtn = this.language === 'pt' ? 'Enviar um áudio 🎤' : 'Send an audio 🎤';
+                
+                this.inputArea.innerHTML = `
+                    <div class="button-group">
+                        <button class="btn btn-primary" onclick="bot.chooseFeedbackType('text')">${textBtn}</button>
+                        <button class="btn btn-secondary" onclick="bot.chooseFeedbackType('audio')">${audioBtn}</button>
+                    </div>
+                `;
+            }
+            
+            chooseFeedbackType(type) {
+                const typeText = type === 'text' ? 
+                    (this.language === 'pt' ? 'Texto' : 'Text') : 
+                    (this.language === 'pt' ? 'Áudio' : 'Audio');
+                
+                this.addMessage(typeText, false);
+                
+                if (type === 'text') {
+                    this.showTextInput('feedback_texto');
+                } else {
+                    this.showAudioInput();
+                }
+            }
+            
+            showTextInput(key) {
+                const placeholder = this.language === 'pt' ? 
+                    'Digite suas impressões aqui...' : 
+                    'Type your impressions here...';
+                const btnText = this.language === 'pt' ? 'Enviar' : 'Send';
+                
+                this.inputArea.innerHTML = `
+                    <div style="display: flex; gap: 12px; align-items: center;">
+                        <input type="text" class="text-input" id="textInput" placeholder="${placeholder}" onkeypress="if(event.key==='Enter') bot.submitText('${key}')" style="flex: 1;">
+                        <button class="btn btn-primary" onclick="bot.submitText('${key}')" style="flex-shrink: 0;">${btnText}</button>
+                    </div>
+                `;
+                
+                document.getElementById('textInput').focus();
+            }
+            
+            submitText(key) {
+                const input = document.getElementById('textInput');
+                const text = input.value.trim();
+                
+                if (!text) return;
+                
+                this.responses[key] = text;
+                this.addMessage(text, false);
+                this.currentStep++;
+                this.showLoading();
+            }
+            
+            showAudioInput() {
+                const instruction = this.language === 'pt' ? 
+                    'Grave um áudio e envie o arquivo:' : 
+                    'Record an audio and send the file:';
+                const btnText = this.language === 'pt' ? 'Escolher arquivo de áudio' : 'Choose audio file';
+                
+                this.addMessage(instruction);
+                
+                this.inputArea.innerHTML = `
+                    <div style="text-align: center;">
+                        <input type="file" id="audioFile" class="file-input" accept="audio/*" onchange="bot.handleAudioFile()">
+                        <label for="audioFile" class="file-label">${btnText}</label>
+                    </div>
+                `;
+            }
+            
+            handleAudioFile() {
+                const fileInput = document.getElementById('audioFile');
+                const file = fileInput.files[0];
+                
+                if (file) {
+                    const fileName = file.name;
+                    this.addMessage(`📎 ${fileName}`, false);
+                    
+                    // Converter arquivo para base64 para envio
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        this.responses.feedback_audio = e.target.result;
+                        this.currentStep++;
+                        this.showLoading();
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+            
+            showEndMessage() {
+                this.inputArea.innerHTML = '';
+                this.sendToWebhook();
+            }
+            
+            async sendToWebhook() {
+                try {
+                    const response = await fetch(this.webhookUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(this.responses)
+                    });
+                    
+                    if (response.ok) {
+                        const successMsg = this.language === 'pt' ? 
+                            '✅ Dados enviados com sucesso!' : 
+                            '✅ Data sent successfully!';
+                        this.addMessage(successMsg);
+                    } else {
+                        throw new Error('Network response was not ok');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    const errorMsg = this.language === 'pt' ? 
+                        '❌ Erro ao enviar dados. Tente novamente.' : 
+                        '❌ Error sending data. Please try again.';
+                    this.addMessage(errorMsg);
+                }
+            }
+        }
+        
+        // Inicializar o bot
+        const bot = new FeedbackBot();
+    </script>
+</body>
+</html>
+

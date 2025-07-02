@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Feedback do Livro</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #e3f2fd 0%, #f8f9fa 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #64b5f6 0%, #42a5f5 100%);
+            color: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            margin-bottom: 30px;
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
+            pointer-events: none;
+        }
+        
+        .header-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 40px;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, #64b5f6, #42a5f5);
+        }
+        
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+        
+        .stat-number {
+            font-size: 3em;
+            font-weight: bold;
+            color: #42a5f5;
+            margin-bottom: 15px;
+            display: block;
+        }
+        
+        .stat-label {
+            color: #666;
+            font-size: 1.2em;
+            font-weight: 500;
+        }
+        
+        .stat-sublabel {
+            color: #999;
+            font-size: 0.9em;
+            margin-top: 5px;
+        }
+        
+        .charts-section {
+            margin-bottom: 40px;
+        }
+        
+        .section-title {
+            font-size: 1.8em;
+            color: #333;
+            margin-bottom: 25px;
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .chart-card {
+            background: white;
+            padding: 30px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .chart-card:hover {
+            transform: translateY(-3px);
+        }
+        
+        .chart-title {
+            font-size: 1.4em;
+            margin-bottom: 25px;
+            color: #333;
+            text-align: center;
+            font-weight: 600;
+        }
+        
+        .feedback-section {
+            background: white;
+            padding: 35px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            margin-top: 30px;
+        }
+        
+        .feedback-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 20px;
+            margin-top: 25px;
+        }
+        
+        .feedback-item {
+            padding: 20px;
+            border-left: 5px solid #64b5f6;
+            background: linear-gradient(135deg, #f8f9fa 0%, #ffffff 100%);
+            border-radius: 0 15px 15px 0;
+            transition: all 0.3s ease;
+        }
+        
+        .feedback-item:hover {
+            transform: translateX(5px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+        
+        .feedback-meta {
+            font-size: 0.95em;
+            color: #666;
+            margin-bottom: 12px;
+            font-weight: 500;
+        }
+        
+        .feedback-text {
+            font-style: italic;
+            color: #333;
+            font-size: 1.05em;
+            line-height: 1.6;
+        }
+        
+        .rating-display {
+            display: inline-flex;
+            gap: 3px;
+            margin-left: 10px;
+        }
+        
+        .star {
+            color: #ffd700;
+            font-size: 0.9em;
+        }
+        
+        .language-badge {
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 0.8em;
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        .lang-pt {
+            background: #e8f5e8;
+            color: #2e7d32;
+        }
+        
+        .lang-en {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+        
+        .refresh-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: linear-gradient(135deg, #64b5f6 0%, #42a5f5 100%);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 60px;
+            height: 60px;
+            font-size: 1.5em;
+            cursor: pointer;
+            box-shadow: 0 10px 25px rgba(100, 181, 246, 0.4);
+            transition: all 0.3s ease;
+        }
+        
+        .refresh-btn:hover {
+            transform: scale(1.1) rotate(180deg);
+            box-shadow: 0 15px 35px rgba(100, 181, 246, 0.6);
+        }
+        
+        @media (max-width: 768px) {
+            .container {
+                padding: 0 10px;
+            }
+            
+            .header {
+                padding: 25px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .charts-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .feedback-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="header-content">
+                <h1>📊 Dashboard de Feedback</h1>
+                <p>Casei com a Garota da Capa - Análise em Tempo Real</p>
+            </div>
+        </div>
+        
+        <div class="stats-grid">
+            <div class="stat-card">
+                <span class="stat-number" id="totalRespostas">24</span>
+                <div class="stat-label">Total de Respostas</div>
+                <div class="stat-sublabel">Últimas 24 horas: +6</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number" id="mediaGeral">4.6</span>
+                <div class="stat-label">Média Geral</div>
+                <div class="stat-sublabel">⭐⭐⭐⭐⭐</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number" id="recomendacao">87%</span>
+                <div class="stat-label">Taxa de Recomendação</div>
+                <div class="stat-sublabel">Notas 4 e 5</div>
+            </div>
+            <div class="stat-card">
+                <span class="stat-number" id="idiomas">2</span>
+                <div class="stat-label">Idiomas</div>
+                <div class="stat-sublabel">PT: 67% | EN: 33%</div>
+            </div>
+        </div>
+        
+        <div class="charts-section">
+            <h2 class="section-title">📈 Análise Detalhada</h2>
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <div class="chart-title">Avaliações por Categoria</div>
+                    <canvas id="categoryChart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-title">Distribuição de Notas</div>
+                    <canvas id="ratingChart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-title">Respostas por Idioma</div>
+                    <canvas id="languageChart"></canvas>
+                </div>
+                <div class="chart-card">
+                    <div class="chart-title">Tendência Temporal</div>
+                    <canvas id="timeChart"></canvas>
+                </div>
+            </div>
+        </div>
+        
+        <div class="feedback-section">
+            <h2 class="section-title">💬 Últimos Feedbacks</h2>
+            <div class="feedback-grid" id="feedbackGrid">
+                <!-- Feedbacks serão inseridos aqui -->
+            </div>
+        </div>
+    </div>
+    
+    <button class="refresh-btn" onclick="refreshData()" title="Atualizar dados">🔄</button>
+    
+    <script>
+        // Dados simulados (em produção, viriam da API)
+        const feedbackData = [
+            {
+                timestamp: '2025-01-02 20:45:00',
+                idioma: 'pt',
+                notas: [5, 5, 5, 5],
+                feedback: 'Livro absolutamente incrível! A história me tocou profundamente e me fez refletir sobre minha própria jornada. Recomendo para todos!'
+            },
+            {
+                timestamp: '2025-01-02 19:30:00',
+                idioma: 'en',
+                notas: [4, 5, 4, 4],
+                feedback: 'Great book! Very inspiring story that resonates with many life experiences. The writing style is engaging and heartfelt.'
+            },
+            {
+                timestamp: '2025-01-02 18:15:00',
+                idioma: 'pt',
+                notas: [5, 4, 5, 5],
+                feedback: 'Uma jornada extraordinária! O autor conseguiu transmitir emoções de forma muito autêntica. Chorei e ri junto com a história.'
+            },
+            {
+                timestamp: '2025-01-02 16:20:00',
+                idioma: 'pt',
+                notas: [4, 4, 4, 4],
+                feedback: 'História bem escrita e envolvente. A capa realmente chama atenção e o título é intrigante. Valeu a pena a leitura!'
+            },
+            {
+                timestamp: '2025-01-02 14:10:00',
+                idioma: 'en',
+                notas: [5, 5, 5, 5],
+                feedback: 'Amazing journey! This book touched my heart in ways I didn\'t expect. The author\'s vulnerability and honesty are remarkable.'
+            },
+            {
+                timestamp: '2025-01-02 12:05:00',
+                idioma: 'pt',
+                notas: [3, 4, 4, 3],
+                feedback: 'Boa história, mas achei que poderia ter mais desenvolvimento em algumas partes. No geral, é uma leitura interessante.'
+            }
+        ];
+        
+        function renderFeedbacks() {
+            const grid = document.getElementById('feedbackGrid');
+            grid.innerHTML = '';
+            
+            feedbackData.forEach(item => {
+                const stars = item.notas.map(nota => '⭐'.repeat(nota)).join(' | ');
+                const langClass = item.idioma === 'pt' ? 'lang-pt' : 'lang-en';
+                const langText = item.idioma === 'pt' ? 'Português' : 'English';
+                
+                const feedbackElement = document.createElement('div');
+                feedbackElement.className = 'feedback-item';
+                feedbackElement.innerHTML = `
+                    <div class="feedback-meta">
+                        <span class="language-badge ${langClass}">${langText}</span>
+                        ${item.timestamp}
+                        <span class="rating-display">${stars}</span>
+                    </div>
+                    <div class="feedback-text">"${item.feedback}"</div>
+                `;
+                
+                grid.appendChild(feedbackElement);
+            });
+        }
+        
+        function initCharts() {
+            // Gráfico de Categorias
+            const categoryCtx = document.getElementById('categoryChart').getContext('2d');
+            new Chart(categoryCtx, {
+                type: 'bar',
+                data: {
+                    labels: ['Capa', 'Título', 'História', 'Recomendação'],
+                    datasets: [{
+                        label: 'Média das Notas',
+                        data: [4.3, 4.5, 4.7, 4.2],
+                        backgroundColor: [
+                            'rgba(100, 181, 246, 0.8)',
+                            'rgba(66, 165, 245, 0.8)',
+                            'rgba(33, 150, 243, 0.8)',
+                            'rgba(21, 101, 192, 0.8)'
+                        ],
+                        borderColor: [
+                            'rgba(100, 181, 246, 1)',
+                            'rgba(66, 165, 245, 1)',
+                            'rgba(33, 150, 243, 1)',
+                            'rgba(21, 101, 192, 1)'
+                        ],
+                        borderWidth: 2,
+                        borderRadius: 8
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            max: 5,
+                            grid: {
+                                color: 'rgba(0,0,0,0.1)'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Gráfico de Distribuição
+            const ratingCtx = document.getElementById('ratingChart').getContext('2d');
+            new Chart(ratingCtx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['5 Estrelas', '4 Estrelas', '3 Estrelas', '2 Estrelas', '1 Estrela'],
+                    datasets: [{
+                        data: [15, 7, 2, 0, 0],
+                        backgroundColor: [
+                            'rgba(76, 175, 80, 0.8)',
+                            'rgba(100, 181, 246, 0.8)',
+                            'rgba(255, 193, 7, 0.8)',
+                            'rgba(255, 152, 0, 0.8)',
+                            'rgba(244, 67, 54, 0.8)'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 20,
+                                usePointStyle: true
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Gráfico de Idiomas
+            const languageCtx = document.getElementById('languageChart').getContext('2d');
+            new Chart(languageCtx, {
+                type: 'pie',
+                data: {
+                    labels: ['Português', 'English'],
+                    datasets: [{
+                        data: [16, 8],
+                        backgroundColor: [
+                            'rgba(76, 175, 80, 0.8)',
+                            'rgba(33, 150, 243, 0.8)'
+                        ],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            position: 'bottom',
+                            labels: {
+                                padding: 20,
+                                usePointStyle: true
+                            }
+                        }
+                    }
+                }
+            });
+            
+            // Gráfico de Tendência
+            const timeCtx = document.getElementById('timeChart').getContext('2d');
+            new Chart(timeCtx, {
+                type: 'line',
+                data: {
+                    labels: ['10h', '12h', '14h', '16h', '18h', '20h'],
+                    datasets: [{
+                        label: 'Respostas por Hora',
+                        data: [2, 4, 3, 5, 6, 4],
+                        borderColor: 'rgba(100, 181, 246, 1)',
+                        backgroundColor: 'rgba(100, 181, 246, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.4,
+                        pointBackgroundColor: 'rgba(100, 181, 246, 1)',
+                        pointBorderColor: '#fff',
+                        pointBorderWidth: 2,
+                        pointRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    plugins: {
+                        legend: {
+                            display: false
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            grid: {
+                                color: 'rgba(0,0,0,0.1)'
+                            }
+                        },
+                        x: {
+                            grid: {
+                                display: false
+                            }
+                        }
+                    }
+                }
+            });
+        }
+        
+        function refreshData() {
+            // Simular atualização de dados
+            const button = document.querySelector('.refresh-btn');
+            button.style.transform = 'scale(1.1) rotate(360deg)';
+            
+            setTimeout(() => {
+                button.style.transform = 'scale(1) rotate(0deg)';
+                
+                // Atualizar estatísticas com pequenas variações
+                const total = document.getElementById('totalRespostas');
+                const media = document.getElementById('mediaGeral');
+                const recomendacao = document.getElementById('recomendacao');
+                
+                total.textContent = parseInt(total.textContent) + Math.floor(Math.random() * 3);
+                media.textContent = (parseFloat(media.textContent) + (Math.random() - 0.5) * 0.2).toFixed(1);
+                recomendacao.textContent = Math.floor(85 + Math.random() * 10) + '%';
+                
+            }, 500);
+        }
+        
+        // Inicializar dashboard
+        document.addEventListener('DOMContentLoaded', function() {
+            renderFeedbacks();
+            initCharts();
+        });
+    </script>
+</body>
+</html>
+

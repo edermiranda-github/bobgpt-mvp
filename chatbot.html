@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feedback - Casei com a Garota da Capa</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #e3f2fd 0%, #f8f9fa 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .chat-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            width: 100%;
+            max-width: 500px;
+            height: 600px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .chat-header {
+            background: linear-gradient(135deg, #64b5f6 0%, #42a5f5 100%);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .chat-header h1 {
+            font-size: 1.2em;
+            margin-bottom: 5px;
+        }
+
+        .chat-header p {
+            font-size: 0.9em;
+            opacity: 0.9;
+        }
+
+        .chat-messages {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .message {
+            max-width: 80%;
+            padding: 12px 16px;
+            border-radius: 18px;
+            animation: fadeIn 0.3s ease-in;
+        }
+
+        .bot-message {
+            background: #f1f3f4;
+            color: #333;
+            align-self: flex-start;
+        }
+
+        .user-message {
+            background: #64b5f6;
+            color: white;
+            align-self: flex-end;
+        }
+
+        .input-area {
+            padding: 20px;
+            border-top: 1px solid #e0e0e0;
+            background: #fafafa;
+        }
+
+        .button-group {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: #64b5f6;
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background: #42a5f5;
+            transform: translateY(-2px);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #64b5f6;
+            border: 2px solid #64b5f6;
+        }
+
+        .btn-secondary:hover {
+            background: #64b5f6;
+            color: white;
+        }
+
+        .rating-buttons {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .rating-btn {
+            flex: 1;
+            min-width: 40px;
+            padding: 10px;
+            background: white;
+            border: 2px solid #e0e0e0;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .rating-btn:hover {
+            border-color: #64b5f6;
+            background: #e3f2fd;
+        }
+
+        .rating-btn.selected {
+            background: #64b5f6;
+            color: white;
+            border-color: #64b5f6;
+        }
+
+        .text-input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e0e0e0;
+            border-radius: 25px;
+            font-size: 14px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .text-input:focus {
+            border-color: #64b5f6;
+        }
+
+        .file-input {
+            display: none;
+        }
+
+        .file-label {
+            display: inline-block;
+            padding: 12px 20px;
+            background: #4caf50;
+            color: white;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .file-label:hover {
+            background: #45a049;
+            transform: translateY(-2px);
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .loading {
+            display: flex;
+            gap: 4px;
+            padding: 12px 16px;
+        }
+
+        .loading-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #64b5f6;
+            animation: loading 1.4s infinite ease-in-out;
+        }
+
+        .loading-dot:nth-child(1) { animation-delay: -0.32s; }
+        .loading-dot:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes loading {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <h1 id="header-title">Feedback - Casei com a Garota da Capa</h1>
+            <p id="header-subtitle">Compartilhe suas impressões sobre o livro</p>
+        </div>
+        
+        <div class="chat-messages" id="messages">
+            <!-- Mensagens aparecerão aqui -->
+        </div>
+        
+        <div class="input-area" id="input-area">
+            <!-- Área de input dinâmica -->
+        </div>
+    </div>
+
+    <script>
+        class FeedbackBot {
+            constructor() {
+                this.messages = document.getElementById('messages');
+                this.inputArea = document.getElementById('input-area');
+                this.currentStep = 0;
+                this.language = null;
+                this.responses = {};
+                this.webhookUrl = 'https://bobgpt.app.n8n.cloud/webhook/feedback-webhook';
+                
+                this.steps = {
+                    pt: [
+                        {
+                            message: "Saudações! Feliz em compartilhar com você as primeiras impressões sobre o nosso livro 'Casei com a Garota da Capa'.",
+                            type: "language_select"
+                        },
+                        {
+                            message: "De 0 a 5, a capa é bonita?",
+                            type: "rating",
+                            key: "nota_capa"
+                        },
+                        {
+                            message: "De 0 a 5, o título me chama a atenção?",
+                            type: "rating",
+                            key: "nota_titulo"
+                        },
+                        {
+                            message: "De 0 a 5, é uma história inspiradora?",
+                            type: "rating",
+                            key: "nota_historia"
+                        },
+                        {
+                            message: "De 0 a 5, recomendaria a compra para um amigo?",
+                            type: "rating",
+                            key: "nota_recomendacao"
+                        },
+                        {
+                            message: "Compartilhe suas impressões e feedbacks:",
+                            type: "feedback_choice"
+                        },
+                        {
+                            message: "Muito obrigado pela sua contribuição! Suas respostas foram enviadas com sucesso.",
+                            type: "end"
+                        }
+                    ],
+                    en: [
+                        {
+                            message: "Greetings! I'm happy to share with you the first impressions of our book 'I Married the Cover Girl'.",
+                            type: "language_select"
+                        },
+                        {
+                            message: "From 0 to 5, is the cover beautiful?",
+                            type: "rating",
+                            key: "nota_capa"
+                        },
+                        {
+                            message: "From 0 to 5, does the title grab my attention?",
+                            type: "rating",
+                            key: "nota_titulo"
+                        },
+                        {
+                            message: "From 0 to 5, is it an inspiring story?",
+                            type: "rating",
+                            key: "nota_historia"
+                        },
+                        {
+                            message: "From 0 to 5, would you recommend it to a friend?",
+                            type: "rating",
+                            key: "nota_recomendacao"
+                        },
+                        {
+                            message: "Share your impressions and feedback:",
+                            type: "feedback_choice"
+                        },
+                        {
+                            message: "Thank you very much for your contribution! Your responses have been sent successfully.",
+                            type: "end"
+                        }
+                    ]
+                };
+                
+                this.init();
+            }
+            
+            init() {
+                this.showLanguageSelection();
+            }
+            
+            addMessage(text, isBot = true) {
+                const messageDiv = document.createElement('div');
+                messageDiv.className = `message ${isBot ? 'bot-message' : 'user-message'}`;
+                messageDiv.textContent = text;
+                this.messages.appendChild(messageDiv);
+                this.messages.scrollTop = this.messages.scrollHeight;
+            }
+            
+            showLoading() {
+                const loadingDiv = document.createElement('div');
+                loadingDiv.className = 'message bot-message loading';
+                loadingDiv.innerHTML = '<div class="loading-dot"></div><div class="loading-dot"></div><div class="loading-dot"></div>';
+                this.messages.appendChild(loadingDiv);
+                this.messages.scrollTop = this.messages.scrollHeight;
+                
+                setTimeout(() => {
+                    loadingDiv.remove();
+                    this.nextStep();
+                }, 1000);
+            }
+            
+            showLanguageSelection() {
+                this.addMessage("Saudações! / Greetings! 👋");
+                this.addMessage("Por favor, selecione seu idioma / Please select your language:");
+                
+                this.inputArea.innerHTML = `
+                    <div class="button-group">
+                        <button class="btn btn-primary" onclick="bot.selectLanguage('pt')">🇧🇷 Português</button>
+                        <button class="btn btn-secondary" onclick="bot.selectLanguage('en')">🇺🇸 English</button>
+                    </div>
+                `;
+            }
+            
+            selectLanguage(lang) {
+                this.language = lang;
+                this.responses.idioma = lang;
+                this.responses.timestamp = new Date().toISOString();
+                
+                const langText = lang === 'pt' ? 'Português' : 'English';
+                this.addMessage(langText, false);
+                
+                // Atualizar header
+                if (lang === 'en') {
+                    document.getElementById('header-title').textContent = 'Feedback - I Married the Cover Girl';
+                    document.getElementById('header-subtitle').textContent = 'Share your impressions about the book';
+                }
+                
+                this.currentStep = 0;
+                this.showLoading();
+            }
+            
+            nextStep() {
+                const steps = this.steps[this.language];
+                if (this.currentStep >= steps.length) return;
+                
+                const step = steps[this.currentStep];
+                this.addMessage(step.message);
+                
+                switch (step.type) {
+                    case 'rating':
+                        this.showRatingInput(step.key);
+                        break;
+                    case 'feedback_choice':
+                        this.showFeedbackChoice();
+                        break;
+                    case 'text_input':
+                        this.showTextInput(step.key);
+                        break;
+                    case 'audio_input':
+                        this.showAudioInput();
+                        break;
+                    case 'end':
+                        this.showEndMessage();
+                        break;
+                }
+            }
+            
+            showRatingInput(key) {
+                this.inputArea.innerHTML = `
+                    <div class="rating-buttons">
+                        ${[0,1,2,3,4,5].map(num => 
+                            `<button class="rating-btn" onclick="bot.selectRating(${num}, '${key}')">${num}</button>`
+                        ).join('')}
+                    </div>
+                `;
+            }
+            
+            selectRating(rating, key) {
+                this.responses[key] = rating;
+                this.addMessage(rating.toString(), false);
+                this.currentStep++;
+                this.showLoading();
+            }
+            
+            showFeedbackChoice() {
+                const textBtn = this.language === 'pt' ? 'Deixar um texto ✍️' : 'Leave a text ✍️';
+                const audioBtn = this.language === 'pt' ? 'Enviar um áudio 🎤' : 'Send an audio 🎤';
+                
+                this.inputArea.innerHTML = `
+                    <div class="button-group">
+                        <button class="btn btn-primary" onclick="bot.chooseFeedbackType('text')">${textBtn}</button>
+                        <button class="btn btn-secondary" onclick="bot.chooseFeedbackType('audio')">${audioBtn}</button>
+                    </div>
+                `;
+            }
+            
+            chooseFeedbackType(type) {
+                const typeText = type === 'text' ? 
+                    (this.language === 'pt' ? 'Texto' : 'Text') : 
+                    (this.language === 'pt' ? 'Áudio' : 'Audio');
+                
+                this.addMessage(typeText, false);
+                
+                if (type === 'text') {
+                    this.showTextInput('feedback_texto');
+                } else {
+                    this.showAudioInput();
+                }
+            }
+            
+            showTextInput(key) {
+                const placeholder = this.language === 'pt' ? 
+                    'Digite suas impressões aqui...' : 
+                    'Type your impressions here...';
+                const btnText = this.language === 'pt' ? 'Enviar' : 'Send';
+                
+                this.inputArea.innerHTML = `
+                    <div style="display: flex; gap: 10px;">
+                        <input type="text" class="text-input" id="textInput" placeholder="${placeholder}" onkeypress="if(event.key==='Enter') bot.submitText('${key}')">
+                        <button class="btn btn-primary" onclick="bot.submitText('${key}')">${btnText}</button>
+                    </div>
+                `;
+                
+                document.getElementById('textInput').focus();
+            }
+            
+            submitText(key) {
+                const input = document.getElementById('textInput');
+                const text = input.value.trim();
+                
+                if (!text) return;
+                
+                this.responses[key] = text;
+                this.addMessage(text, false);
+                this.currentStep++;
+                this.showLoading();
+            }
+            
+            showAudioInput() {
+                const instruction = this.language === 'pt' ? 
+                    'Grave um áudio e envie o arquivo:' : 
+                    'Record an audio and send the file:';
+                const btnText = this.language === 'pt' ? 'Escolher arquivo de áudio' : 'Choose audio file';
+                
+                this.addMessage(instruction);
+                
+                this.inputArea.innerHTML = `
+                    <div>
+                        <input type="file" id="audioFile" class="file-input" accept="audio/*" onchange="bot.handleAudioFile()">
+                        <label for="audioFile" class="file-label">${btnText}</label>
+                    </div>
+                `;
+            }
+            
+            handleAudioFile() {
+                const fileInput = document.getElementById('audioFile');
+                const file = fileInput.files[0];
+                
+                if (file) {
+                    const fileName = file.name;
+                    this.addMessage(`📎 ${fileName}`, false);
+                    
+                    // Converter arquivo para base64 para envio
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        this.responses.feedback_audio = e.target.result;
+                        this.currentStep++;
+                        this.showLoading();
+                    };
+                    reader.readAsDataURL(file);
+                }
+            }
+            
+            showEndMessage() {
+                this.inputArea.innerHTML = '';
+                this.sendToWebhook();
+            }
+            
+            async sendToWebhook() {
+                try {
+                    const response = await fetch(this.webhookUrl, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify(this.responses)
+                    });
+                    
+                    if (response.ok) {
+                        const successMsg = this.language === 'pt' ? 
+                            '✅ Dados enviados com sucesso!' : 
+                            '✅ Data sent successfully!';
+                        this.addMessage(successMsg);
+                    } else {
+                        throw new Error('Network response was not ok');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    const errorMsg = this.language === 'pt' ? 
+                        '❌ Erro ao enviar dados. Tente novamente.' : 
+                        '❌ Error sending data. Please try again.';
+                    this.addMessage(errorMsg);
+                }
+            }
+        }
+        
+        // Inicializar o bot
+        const bot = new FeedbackBot();
+    </script>
+</body>
+</html>
+
