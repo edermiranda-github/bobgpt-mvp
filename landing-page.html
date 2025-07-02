@@ -286,16 +286,7 @@
             <h2>💬 Compartilhe seu Feedback</h2>
             <div class="chat-container">
                 <div class="chat-messages" id="chatMessages">
-                    <div class="message bot">
-                        Saudações! / Greetings! 👋
-                        <div style="margin-top: 10px;">
-                            Por favor, selecione seu idioma / Please select your language:
-                        </div>
-                        <div class="language-selector">
-                            <button class="lang-btn" onclick="selectLanguage('pt', this)">🇧🇷 Português</button>
-                            <button class="lang-btn" onclick="selectLanguage('en', this)">🇺🇸 English</button>
-                        </div>
-                    </div>
+                    <!-- Initial message will be added by JavaScript -->
                 </div>
             </div>
             
@@ -624,11 +615,24 @@
         }
 
         // Inicialização
-        document.addEventListener('DOMContentLoaded', () => {
-            console.log('DOM Content Loaded');
-            // O estado inicial já é 'language', então não precisamos chamar nada aqui.
-            // A primeira mensagem já está no HTML.
-        });
+        window.onload = () => {
+            console.log('Window loaded');
+            // Adicionar a mensagem inicial ao carregar a página
+            const chatMessages = document.getElementById('chatMessages');
+            chatMessages.innerHTML = `
+                <div class="message bot">
+                    Saudações! / Greetings! 👋
+                    <div style="margin-top: 10px;">
+                        Por favor, selecione seu idioma / Please select your language:
+                    </div>
+                    <div class="language-selector">
+                        <button class="lang-btn" onclick="selectLanguage('pt', this)">🇧🇷 Português</button>
+                        <button class="lang-btn" onclick="selectLanguage('en', this)">🇺🇸 English</button>
+                    </div>
+                </div>
+            `;
+            scrollToBottom();
+        };
     </script>
 </body>
 </html>
