@@ -371,6 +371,11 @@
             messageDiv.classList.add('message', sender);
             messageDiv.innerHTML = text;
             chatMessages.appendChild(messageDiv);
+            scrollToBottom(); // Adicionado para rolar automaticamente
+        }
+
+        function scrollToBottom() {
+            const chatMessages = document.getElementById('chatMessages');
             chatMessages.scrollTop = chatMessages.scrollHeight;
         }
 
@@ -433,6 +438,7 @@
                     ${texts[chatState.language].selectRating}
                 </p>
             `;
+            scrollToBottom(); // Adicionado para rolar automaticamente
         }
 
         function selectRating(step, rating, element) {
@@ -494,6 +500,7 @@
                 </div>
                 <div id="audioStatus" class="hidden"></div>
             `;
+            scrollToBottom(); // Adicionado para rolar automaticamente
         }
 
         async function sendTextFeedback() {
