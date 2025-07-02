@@ -1,408 +1,299 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="pt">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Casei com a Garota da Capa - Compartilhe seu Feedback</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <style>
-        * {
+        body {
+            font-family: 'Roboto', sans-serif;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-        }
-        
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #e3f2fd 0%, #f8f9fa 100%);
+            background-color: #e0f2f7; /* Azul claro */
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
             min-height: 100vh;
+            color: #333;
             line-height: 1.6;
         }
-        
-        .hero {
-            background: linear-gradient(135deg, #64b5f6 0%, #42a5f5 100%);
-            color: white;
-            text-align: center;
-            padding: 60px 20px;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .hero::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100"><defs><pattern id="grain" width="100" height="100" patternUnits="userSpaceOnUse"><circle cx="25" cy="25" r="1" fill="white" opacity="0.1"/><circle cx="75" cy="75" r="1" fill="white" opacity="0.1"/></pattern></defs><rect width="100" height="100" fill="url(%23grain)"/></svg>');
-            pointer-events: none;
-        }
-        
-        .hero-content {
-            position: relative;
-            z-index: 1;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        
-        .hero h1 {
-            font-size: 3em;
-            margin-bottom: 20px;
-            font-weight: 700;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.2);
-        }
-        
-        .hero p {
-            font-size: 1.3em;
-            opacity: 0.95;
-            max-width: 600px;
-            margin: 0 auto;
-        }
-        
+
         .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 40px 20px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 40px;
-            align-items: start;
-        }
-        
-        .book-info {
-            background: white;
-            padding: 40px;
-            border-radius: 20px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
-            height: fit-content;
-        }
-        
-        .book-cover {
-            width: 100%;
-            height: 300px;
-            background: linear-gradient(135deg, #81c784 0%, #66bb6a 100%);
-            border-radius: 15px;
             display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
-            font-size: 1.5em;
-            font-weight: bold;
-            text-align: center;
-            margin-bottom: 30px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
-        }
-        
-        .book-info h2 {
-            color: #42a5f5;
-            margin-bottom: 20px;
-            font-size: 1.8em;
-        }
-        
-        .book-info p {
-            color: #666;
-            font-style: italic;
-            line-height: 1.8;
-            font-size: 1.1em;
-        }
-        
-        .chat-container {
-            background: white;
-            border-radius: 20px;
-            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+            flex-wrap: wrap;
+            width: 90%;
+            max-width: 1200px;
+            margin: 20px auto;
+            background-color: #fff;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             overflow: hidden;
-            height: 600px;
+        }
+
+        .book-info {
+            flex: 1;
+            min-width: 300px;
+            padding: 40px;
+            background: linear-gradient(135deg, #81d4fa, #4fc3f7); /* Gradiente azul céu */
+            color: #fff;
+            text-align: center;
             display: flex;
             flex-direction: column;
+            justify-content: center;
+            align-items: center;
         }
-        
-        .chat-header {
-            background: linear-gradient(135deg, #64b5f6 0%, #42a5f5 100%);
-            color: white;
-            padding: 20px;
-            text-align: center;
-        }
-        
-        .chat-header h3 {
-            font-size: 1.3em;
-            margin-bottom: 5px;
-        }
-        
-        .chat-header p {
-            opacity: 0.9;
-            font-size: 0.95em;
-        }
-        
-        .chat-messages {
-            flex: 1;
-            padding: 20px;
-            overflow-y: auto;
-            background: #f8f9fa;
-        }
-        
-        .message {
+
+        .book-info h1 {
+            font-size: 2.8em;
             margin-bottom: 15px;
-            animation: fadeIn 0.5s ease-in;
+            font-weight: 700;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
         }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
+
+        .book-info p {
+            font-size: 1.2em;
+            max-width: 500px;
+            opacity: 0.9;
         }
-        
-        .message.bot {
-            text-align: left;
+
+        .book-cover {
+            width: 200px;
+            height: 300px;
+            background-color: #66bb6a; /* Verde claro */
+            border-radius: 10px;
+            margin-top: 30px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.5em;
+            font-weight: 700;
+            color: #fff;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
-        
-        .message.user {
-            text-align: right;
+
+        .book-cover span {
+            display: block;
+            text-align: center;
+            padding: 5px;
         }
-        
-        .message-bubble {
-            display: inline-block;
-            padding: 12px 18px;
-            border-radius: 18px;
+
+        .book-cover span:first-child {
+            font-size: 0.8em;
+            opacity: 0.8;
+        }
+
+        .content-section {
+            flex: 1;
+            min-width: 300px;
+            padding: 40px;
+            background-color: #fff;
+        }
+
+        .content-section h2 {
+            font-size: 1.8em;
+            color: #29b6f6; /* Azul vibrante */
+            margin-bottom: 20px;
+            border-bottom: 2px solid #e0f2f7;
+            padding-bottom: 10px;
+        }
+
+        .chat-container {
+            border: 1px solid #e0f2f7;
+            border-radius: 10px;
+            padding: 20px;
+            background-color: #f5f5f5;
+            height: 500px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .chat-messages {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding-right: 10px;
+            margin-bottom: 15px;
+        }
+
+        .message {
+            margin-bottom: 10px;
+            padding: 10px 15px;
+            border-radius: 15px;
             max-width: 80%;
             word-wrap: break-word;
+            font-size: 0.95em;
         }
-        
-        .message.bot .message-bubble {
-            background: #e3f2fd;
-            color: #1976d2;
+
+        .message.bot {
+            background-color: #e0f7fa; /* Azul claro */
+            align-self: flex-start;
             border-bottom-left-radius: 5px;
         }
-        
-        .message.user .message-bubble {
-            background: #64b5f6;
-            color: white;
+
+        .message.user {
+            background-color: #bbdefb; /* Azul mais escuro */
+            align-self: flex-end;
+            text-align: right;
             border-bottom-right-radius: 5px;
         }
-        
+
         .chat-input {
-            padding: 20px;
-            background: white;
-            border-top: 1px solid #e0e0e0;
-        }
-        
-        .input-group {
+            padding-top: 15px;
+            border-top: 1px solid #e0f2f7;
             display: flex;
+            flex-direction: column;
             gap: 10px;
-            margin-bottom: 10px;
         }
-        
-        .input-group input, .input-group textarea, .input-group select {
-            flex: 1;
-            padding: 12px;
-            border: 2px solid #e0e0e0;
-            border-radius: 10px;
-            font-size: 1em;
-            transition: border-color 0.3s ease;
-        }
-        
-        .input-group input:focus, .input-group textarea:focus, .input-group select:focus {
-            outline: none;
-            border-color: #64b5f6;
-        }
-        
-        .input-group textarea {
-            resize: vertical;
-            min-height: 60px;
-        }
-        
-        .button-group {
+
+        .language-selector, .rating-buttons, .button-group {
             display: flex;
-            gap: 10px;
             flex-wrap: wrap;
+            gap: 10px;
+            justify-content: center;
         }
-        
-        .btn {
+
+        .lang-btn, .rating-btn, .btn {
             padding: 12px 20px;
             border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            font-size: 1em;
-            font-weight: 600;
-            transition: all 0.3s ease;
-            text-decoration: none;
-            display: inline-block;
-            text-align: center;
-        }
-        
-        .btn-primary {
-            background: linear-gradient(135deg, #64b5f6 0%, #42a5f5 100%);
-            color: white;
-        }
-        
-        .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 5px 15px rgba(100, 181, 246, 0.4);
-        }
-        
-        .btn-secondary {
-            background: #f5f5f5;
-            color: #666;
-            border: 2px solid #e0e0e0;
-        }
-        
-        .btn-secondary:hover {
-            background: #e0e0e0;
-        }
-        
-        .btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none !important;
-        }
-        
-        .rating-buttons {
-            display: flex;
-            gap: 8px;
-            justify-content: center;
-            margin: 10px 0;
-        }
-        
-        .rating-btn {
-            width: 40px;
-            height: 40px;
-            border: 2px solid #e0e0e0;
-            background: white;
-            border-radius: 50%;
-            cursor: pointer;
-            font-weight: bold;
-            transition: all 0.3s ease;
-        }
-        
-        .rating-btn:hover, .rating-btn.selected {
-            background: #64b5f6;
-            color: white;
-            border-color: #64b5f6;
-            transform: scale(1.1);
-        }
-        
-        .language-selector {
-            display: flex;
-            gap: 10px;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
-        
-        .lang-btn {
-            padding: 10px 20px;
-            border: 2px solid #e0e0e0;
-            background: white;
             border-radius: 25px;
             cursor: pointer;
-            font-weight: 600;
-            transition: all 0.3s ease;
+            font-size: 1em;
+            transition: background-color 0.3s, transform 0.2s;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
-        
-        .lang-btn:hover, .lang-btn.selected {
-            background: #64b5f6;
+
+        .lang-btn {
+            background-color: #29b6f6; /* Azul vibrante */
             color: white;
-            border-color: #64b5f6;
         }
-        
+
+        .lang-btn:hover {
+            background-color: #0288d1;
+            transform: translateY(-2px);
+        }
+
+        .lang-btn.selected {
+            background-color: #0288d1;
+            border: 2px solid #0288d1;
+            transform: translateY(-2px);
+        }
+
+        .rating-btn {
+            background-color: #81d4fa; /* Azul claro */
+            color: #333;
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: 700;
+        }
+
+        .rating-btn:hover {
+            background-color: #4fc3f7;
+            transform: translateY(-2px);
+        }
+
+        .rating-btn.selected {
+            background-color: #4fc3f7;
+            border: 2px solid #0288d1;
+            transform: translateY(-2px);
+        }
+
+        textarea {
+            width: calc(100% - 20px);
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            resize: vertical;
+            min-height: 60px;
+            font-family: 'Roboto', sans-serif;
+            font-size: 1em;
+        }
+
+        .btn-primary {
+            background-color: #4CAF50; /* Verde */
+            color: white;
+        }
+
+        .btn-primary:hover {
+            background-color: #388E3C;
+        }
+
+        .btn-secondary {
+            background-color: #ff9800; /* Laranja */
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background-color: #f57c00;
+        }
+
         .hidden {
             display: none;
         }
-        
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid #f3f3f3;
-            border-top: 3px solid #64b5f6;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        .success-message {
-            background: #e8f5e8;
-            color: #2e7d32;
-            padding: 15px;
-            border-radius: 10px;
+
+        #audioStatus {
             text-align: center;
-            margin: 10px 0;
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 5px;
         }
-        
-        .error-message {
-            background: #ffebee;
-            color: #c62828;
-            padding: 15px;
-            border-radius: 10px;
-            text-align: center;
-            margin: 10px 0;
-        }
-        
+
         @media (max-width: 768px) {
-            .hero h1 {
+            .container {
+                flex-direction: column;
+                width: 100%;
+                margin: 0;
+                border-radius: 0;
+            }
+
+            .book-info, .content-section {
+                padding: 20px;
+                min-width: unset;
+            }
+
+            .book-info h1 {
                 font-size: 2em;
             }
-            
-            .container {
-                grid-template-columns: 1fr;
-                gap: 20px;
-                padding: 20px 10px;
+
+            .book-info p {
+                font-size: 1em;
             }
-            
-            .book-info, .chat-container {
-                margin: 0 10px;
-            }
-            
+
             .chat-container {
-                height: 500px;
-            }
-            
-            .button-group {
-                flex-direction: column;
-            }
-            
-            .rating-buttons {
-                flex-wrap: wrap;
+                height: 400px;
             }
         }
     </style>
 </head>
 <body>
-    <div class="hero">
-        <div class="hero-content">
-            <h1>Casei com a Garota da Capa</h1>
-            <p>Convido você a se acomodar em uma cadeira confortável e embarcar comigo nesta viagem extraordinária. Aqui compartilho não apenas uma história, mas um tesouro sagrado - os fios dourados que o Universo teceu em minha jornada.</p>
-        </div>
-    </div>
-    
     <div class="container">
         <div class="book-info">
+            <h1>Casei com a Garota da Capa</h1>
+            <p>Uma jornada extraordinária</p>
             <div class="book-cover">
-                Casei com a<br>
-                Garota da Capa<br>
-                <small>Uma jornada extraordinária</small>
+                <span>Casei com a</span>
+                <span>Garota da Capa</span>
+                <span>Uma jornada extraordinária</span>
             </div>
-            <h2>Sobre o Livro</h2>
             <p>Convido você a se acomodar em uma cadeira confortável e embarcar comigo nesta viagem extraordinária. Aqui compartilho não apenas uma história, mas um tesouro sagrado - os fios dourados que o Universo teceu em minha jornada.</p>
         </div>
-        
-        <div class="chat-container">
-            <div class="chat-header">
-                <h3>💬 Compartilhe seu Feedback</h3>
-                <p>Suas impressões são muito importantes para nós</p>
-            </div>
-            
-            <div class="chat-messages" id="chatMessages">
-                <div class="message bot">
-                    <div class="message-bubble">
-                        <div id="welcomeMessage">
-                            Saudações! / Greetings! 👋<br><br>
+        <div class="content-section">
+            <h2>💬 Compartilhe seu Feedback</h2>
+            <div class="chat-container">
+                <div class="chat-messages" id="chatMessages">
+                    <div class="message bot">
+                        Saudações! / Greetings! 👋
+                        <div style="margin-top: 10px;">
                             Por favor, selecione seu idioma / Please select your language:
                         </div>
                         <div class="language-selector">
-                            <button class="lang-btn" onclick="selectLanguage('pt')">🇧🇷 Português</button>
-                            <button class="lang-btn" onclick="selectLanguage('en')">🇺🇸 English</button>
+                            <button class="lang-btn" onclick="selectLanguage('pt', this)">🇧🇷 Português</button>
+                            <button class="lang-btn" onclick="selectLanguage('en', this)">🇺🇸 English</button>
                         </div>
                     </div>
                 </div>
@@ -451,9 +342,9 @@
                 selectRating: "Por favor, selecione uma nota de 0 a 5"
             },
             en: {
-                welcome: "Happy to share with you the first impressions of our book 'I Married the Cover Girl'.",
+                welcome: "Happy to share with you the first impressions about our book 'Married the Cover Girl'.",
                 coverQuestion: "From 0 to 5 - is the cover beautiful?",
-                titleQuestion: "From 0 to 5 - does the title catch my attention?",
+                titleQuestion: "From 0 to 5 - does the title catch your attention?",
                 storyQuestion: "From 0 to 5 - is it an inspiring story?",
                 recommendationQuestion: "From 0 to 5 - would you recommend buying it to a friend?",
                 feedbackQuestion: "Share your impressions and feedback (leave a text or record an audio):",
@@ -474,13 +365,23 @@
         let audioChunks = [];
         let isRecording = false;
 
-        function selectLanguage(lang) {
+        function addMessage(sender, text) {
+            const chatMessages = document.getElementById('chatMessages');
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message', sender);
+            messageDiv.innerHTML = text;
+            chatMessages.appendChild(messageDiv);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+        }
+
+        function selectLanguage(lang, element) {
+            console.log('selectLanguage called with:', lang, element);
             chatState.language = lang;
             chatState.responses.language = lang;
             
             // Marcar botão selecionado
             document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('selected'));
-            event.target.classList.add('selected');
+            element.classList.add('selected');
             
             // Adicionar resposta do usuário
             addMessage('user', lang === 'pt' ? 'Português' : 'English');
@@ -496,6 +397,7 @@
         }
 
         function askRating(step) {
+            console.log('askRating called with:', step);
             const lang = chatState.language;
             let question = '';
             
@@ -519,11 +421,12 @@
         }
 
         function showRatingButtons(step) {
+            console.log('showRatingButtons called with:', step);
             const chatInput = document.getElementById('chatInput');
             chatInput.innerHTML = `
                 <div class="rating-buttons">
                     ${[0,1,2,3,4,5].map(num => 
-                        `<button class="rating-btn" onclick="selectRating('${step}', ${num})">${num}</button>`
+                        `<button class="rating-btn" onclick="selectRating('${step}', ${num}, this)">${num}</button>`
                     ).join('')}
                 </div>
                 <p style="text-align: center; color: #666; font-size: 0.9em; margin-top: 10px;">
@@ -532,12 +435,13 @@
             `;
         }
 
-        function selectRating(step, rating) {
+        function selectRating(step, rating, element) {
+            console.log('selectRating called with:', step, rating, element);
             chatState.responses[step] = rating;
             
             // Marcar botão selecionado
             document.querySelectorAll('.rating-btn').forEach(btn => btn.classList.remove('selected'));
-            event.target.classList.add('selected');
+            element.classList.add('selected');
             
             // Adicionar resposta do usuário
             addMessage('user', `${rating}/5`);
@@ -566,12 +470,14 @@
         }
 
         function askFeedback() {
+            console.log('askFeedback called');
             const lang = chatState.language;
             addMessage('bot', texts[lang].feedbackQuestion);
             showFeedbackInput();
         }
 
         function showFeedbackInput() {
+            console.log('showFeedbackInput called');
             const lang = chatState.language;
             const chatInput = document.getElementById('chatInput');
             chatInput.innerHTML = `
@@ -590,144 +496,131 @@
             `;
         }
 
-        function sendTextFeedback() {
+        async function sendTextFeedback() {
+            console.log('sendTextFeedback called');
             const feedbackText = document.getElementById('feedbackText').value.trim();
             if (!feedbackText) return;
             
             chatState.responses.feedbackText = feedbackText;
             addMessage('user', feedbackText);
             
-            setTimeout(() => {
-                sendFeedbackToWebhook();
-            }, 500);
+            await sendFeedbackToN8n();
         }
 
         async function toggleAudioRecording() {
+            console.log('toggleAudioRecording called');
             const audioBtn = document.getElementById('audioBtn');
             const audioStatus = document.getElementById('audioStatus');
-            const lang = chatState.language;
-            
+
             if (!isRecording) {
+                // Iniciar gravação
                 try {
                     const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
                     mediaRecorder = new MediaRecorder(stream);
                     audioChunks = [];
-                    
-                    mediaRecorder.ondataavailable = (event) => {
+
+                    mediaRecorder.ondataavailable = event => {
                         audioChunks.push(event.data);
                     };
-                    
-                    mediaRecorder.onstop = () => {
-                        const audioBlob = new Blob(audioChunks, { type: 'audio/wav' });
+
+                    mediaRecorder.onstop = async () => {
+                        const audioBlob = new Blob(audioChunks, { type: 'audio/webm' });
                         chatState.responses.feedbackAudio = audioBlob;
-                        
-                        audioStatus.innerHTML = `
-                            <div style="text-align: center; margin: 10px 0;">
-                                <p>Áudio gravado com sucesso!</p>
-                                <button class="btn btn-primary" onclick="sendAudioFeedback()">
-                                    ${texts[lang].sendAudio}
-                                </button>
-                            </div>
-                        `;
-                        audioStatus.classList.remove('hidden');
+                        addMessage('user', 'Áudio gravado.');
+                        await sendFeedbackToN8n();
                     };
-                    
+
                     mediaRecorder.start();
                     isRecording = true;
-                    audioBtn.textContent = texts[lang].stopRecording;
-                    audioBtn.style.background = '#f44336';
-                    
-                    audioStatus.innerHTML = '<p style="text-align: center; color: #f44336;">🔴 Gravando...</p>';
+                    audioBtn.textContent = texts[chatState.language].stopRecording;
+                    audioBtn.classList.remove('btn-secondary');
+                    audioBtn.classList.add('btn-primary');
+                    audioStatus.textContent = 'Gravando...';
                     audioStatus.classList.remove('hidden');
-                    
                 } catch (error) {
                     console.error('Erro ao acessar microfone:', error);
-                    audioStatus.innerHTML = '<p style="text-align: center; color: #f44336;">Erro ao acessar microfone</p>';
+                    audioStatus.textContent = 'Erro ao acessar microfone. Verifique as permissões.';
                     audioStatus.classList.remove('hidden');
                 }
             } else {
+                // Parar gravação
                 mediaRecorder.stop();
-                mediaRecorder.stream.getTracks().forEach(track => track.stop());
                 isRecording = false;
-                audioBtn.textContent = texts[lang].recordAudio;
-                audioBtn.style.background = '';
+                audioBtn.textContent = texts[chatState.language].recordAudio;
+                audioBtn.classList.remove('btn-primary');
+                audioBtn.classList.add('btn-secondary');
+                audioStatus.textContent = '';
+                audioStatus.classList.add('hidden');
             }
         }
 
-        function sendAudioFeedback() {
-            addMessage('user', '🎵 Áudio enviado');
-            setTimeout(() => {
-                sendFeedbackToWebhook();
-            }, 500);
-        }
-
-        async function sendFeedbackToWebhook() {
+        async function sendFeedbackToN8n() {
+            console.log('sendFeedbackToN8n called');
             const lang = chatState.language;
             const chatInput = document.getElementById('chatInput');
-            
-            // Mostrar loading
-            chatInput.innerHTML = `
-                <div style="text-align: center; padding: 20px;">
-                    <div class="loading"></div>
-                    <p style="margin-top: 10px;">${texts[lang].sending}</p>
-                </div>
-            `;
-            
-            try {
-                // Preparar dados para envio
-                const formData = new FormData();
-                formData.append('timestamp', chatState.responses.timestamp);
-                formData.append('language', chatState.responses.language);
-                formData.append('coverRating', chatState.responses.coverRating);
-                formData.append('titleRating', chatState.responses.titleRating);
-                formData.append('storyRating', chatState.responses.storyRating);
-                formData.append('recommendationRating', chatState.responses.recommendationRating);
-                formData.append('feedbackText', chatState.responses.feedbackText);
-                
-                if (chatState.responses.feedbackAudio) {
-                    formData.append('feedbackAudio', chatState.responses.feedbackAudio, 'feedback.wav');
+            chatInput.innerHTML = `<div class="message bot">${texts[lang].sending}</div>`;
+
+            const formData = new FormData();
+            for (const key in chatState.responses) {
+                if (chatState.responses[key] !== null && chatState.responses[key] !== '') {
+                    if (key === 'feedbackAudio' && chatState.responses[key] instanceof Blob) {
+                        formData.append(key, chatState.responses[key], 'audio.webm');
+                    } else {
+                        formData.append(key, chatState.responses[key]);
+                    }
                 }
-                
-                // Enviar para o webhook do n8n
+            }
+
+            try {
                 const response = await fetch('https://bobgpt.app.n8n.cloud/webhook/feedback-webhook', {
                     method: 'POST',
                     body: formData
                 });
-                
+
                 if (response.ok) {
                     addMessage('bot', texts[lang].thankYou);
-                    chatInput.innerHTML = `
-                        <div class="success-message">
-                            ✅ Feedback enviado com sucesso!
-                        </div>
-                    `;
+                    // Resetar estado para permitir novo feedback
+                    chatState.responses = {
+                        timestamp: new Date().toISOString(),
+                        language: null,
+                        coverRating: null,
+                        titleRating: null,
+                        storyRating: null,
+                        recommendationRating: null,
+                        feedbackText: '',
+                        feedbackAudio: null
+                    };
+                    chatState.currentStep = 'language';
+                    setTimeout(() => {
+                        document.getElementById('chatMessages').innerHTML = `
+                            <div class="message bot">
+                                Saudações! / Greetings! 👋
+                                <div style="margin-top: 10px;">
+                                    Por favor, selecione seu idioma / Please select your language:
+                                </div>
+                                <div class="language-selector">
+                                    <button class="lang-btn" onclick="selectLanguage('pt', this)">🇧🇷 Português</button>
+                                    <button class="lang-btn" onclick="selectLanguage('en', this)">🇺🇸 English</button>
+                                </div>
+                            </div>
+                        `;
+                        document.getElementById('chatInput').innerHTML = '';
+                    }, 2000);
                 } else {
-                    throw new Error('Erro na resposta do servidor');
+                    addMessage('bot', texts[lang].error);
+                    console.error('Erro na resposta do webhook:', response.status, response.statusText);
                 }
-                
             } catch (error) {
-                console.error('Erro ao enviar feedback:', error);
                 addMessage('bot', texts[lang].error);
-                chatInput.innerHTML = `
-                    <div class="error-message">
-                        ❌ ${texts[lang].error}
-                    </div>
-                `;
+                console.error('Erro ao enviar feedback:', error);
             }
         }
 
-        function addMessage(sender, text) {
-            const chatMessages = document.getElementById('chatMessages');
-            const messageDiv = document.createElement('div');
-            messageDiv.className = `message ${sender}`;
-            messageDiv.innerHTML = `<div class="message-bubble">${text}</div>`;
-            chatMessages.appendChild(messageDiv);
-            chatMessages.scrollTop = chatMessages.scrollHeight;
-        }
-
         // Inicialização
-        document.addEventListener('DOMContentLoaded', function() {
-            console.log('Chatbot interativo carregado');
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('DOM Content Loaded');
+            // O estado inicial já é 'language', então não precisamos chamar nada aqui.
+            // A primeira mensagem já está no HTML.
         });
     </script>
 </body>
